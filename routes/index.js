@@ -24,4 +24,13 @@ router.get('/', function(req, res) {
   res.render('signup')
 })
 
+router.post('/signup', function(req, res) {
+  const newEmail = req.body.email
+  const newUsername = req.body.username
+  const newPassword = req.body.password
+  const confirmPassword = req.body.confirmPassword
+  console.log(req.body);
+  res.send([newEmail, newUsername, newPassword, confirmPassword])
+})
+
 module.exports = router

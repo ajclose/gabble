@@ -6,6 +6,37 @@
     <link rel="stylesheet" href="/css/master.css">
   </head>
   <body>
-    <h1>join gabble!</h1>
+    <div class="container">
+      <div class="header">
+        <h1>Gabble</h1>
+        <div class="nav">
+          <a href="#">Log In</a>
+          <a href="#">Sign Up</a>
+        </div>
+      </div>
+          <form class="signup" action="/signup" method="post">
+            <fieldset>
+              <legend>Sign up!</legend>
+              <div class="signup-input" id="signup-email">
+                <label for="email">Email Address</label>
+                <input type="text" name="email" id="name" value="" placeholder="Enter Email Address">
+              </div>
+              <div class="signup-input" id="signup-username">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" value="" placeholder="Enter Username">
+              </div>
+              <div class="signup-input" id="signup-password">
+                <label for="password">Password</label>
+                <input type="text" name="password" id="password" value="" placeholder="Enter Password">
+              </div>
+              <div class="signup-input" id="signup-confirm-password">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="text" name="confirmPassword" id="confirmPassword" value="" placeholder="Confirm Password">
+              </div>
+              <input type="submit" name="signup" value="Sign Up!">
+            </fieldset>
+          </form>
+    </div>
+
   </body>
 </html>
