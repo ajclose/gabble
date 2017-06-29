@@ -3,14 +3,21 @@
   <head>
     <meta charset="utf-8">
     <title>Login</title>
+    <link rel="stylesheet" href="/css/master.css">
   </head>
   <body>
-    Congrats!  You successfully signed up
-    username: {{user.username}}
-    email: {{user.email}}
-    password: {{user.password}}
+    <div class="container">
 
-    <form class="login-form" action="/login" method="post">
+
+    <div class="header">
+      <h1>Gabble</h1>
+      <div class="nav">
+        <a href="/login">Log In</a>
+        <a href="/signup">Sign Up</a>
+      </div>
+    </div>
+
+    <form class="login-form" action="/verify" method="post">
       <fieldset>
         <legend>Login</legend>
         <div class="login-username">
@@ -24,6 +31,6 @@
         <input type="submit" name="login" value="Login">
       </fieldset>
     </form>
-
+    </div>
   </body>
 </html>
