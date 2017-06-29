@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+  </head>
+  <body>
+    Congrats!  You successfully signed up
+    username: {{user.username}}
+    email: {{user.email}}
+    password: {{user.password}}
+
+    <form class="login-form" action="/login" method="post">
+      <fieldset>
+        <legend>Login</legend>
+        <div class="login-username">
+          <label for="login-username">Username:</label>
+          <input type="text" id="login-username" name="loginUsername" value="" placeholder="Enter Username">
+        </div>
+        <div class="login-password">
+          <label for="password">Password:</label>
+          <input type="password" id="login-password" name="loginPassword" value="" placeholder="Enter Password">
+        </div>
+        <input type="submit" name="login" value="Login">
+      </fieldset>
+    </form>
+
+  </body>
+</html>
