@@ -105,4 +105,10 @@ router.get('/', function(req, res) {
 
 })
 
+router.get('/logout', function(req, res) {
+  sess = req.session
+  sess.userName = ''
+  res.redirect('/login')
+})
+
 module.exports = router
