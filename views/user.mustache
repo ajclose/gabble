@@ -4,12 +4,13 @@
     <meta charset="utf-8">
     <title>{{user.username}}</title>
     <link rel="stylesheet" href="/css/master.css">
-    <script src="https://use.fontawesome.com/e301358b80.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.css">
   </head>
   <body>
     <div class="container">
       <div class="header">
-        <a href="/"><h1>Gabble</h1></a>
+        <a href="/"><h1 class="gabble">gabble</h1></a>
         <div class="nav">
           <a href="/{{user.username}}/gab">Create Gab</a>
           <a href="/logout">Logout</a>
@@ -27,10 +28,10 @@
               {{text}}
             </div>
             {{#like}}
-            <a href="/unlike/{{id}}"><i class="fa fa-heart" aria-hidden="true"></i></a>
+            <a href="/unlike/{{id}}"><i class="fa fa-heart"></i></a>
             {{/like}}
             {{^like}}
-            <a href="/like/{{id}}"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+            <a href="/like/{{id}}"><i class="fa fa-heart-o"></i></a>
             {{/like}}
             {{#delete}}
             <form class="delete" action="/delete/{{id}}" method="post">

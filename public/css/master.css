@@ -3,6 +3,14 @@
   padding: 0;
   box-sizing: border-box;
 }
+@font-face {
+    font-family: Pacifico;
+    src: url('https://fonts.googleapis.com/css?family=Pacifico');
+}
+
+a {
+  text-decoration: none;
+}
 
 .container {
   display: flex;
@@ -23,4 +31,9 @@
 .gab {
   border: 2px solid black;
   margin: 10px;
+}
+
+.gabble {
+  font-family: 'Pacifico', cursive;
+  font-size: 70px;
 }

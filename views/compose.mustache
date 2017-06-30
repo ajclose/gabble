@@ -2,16 +2,20 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>New Gab!</title>
+    <title>{{user.username}}</title>
+    <link rel="stylesheet" href="/css/master.css">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.css">
   </head>
   <body>
     <div class="container">
       <div class="header">
-        <a href="/"><h1>Gabble</h1></a>
+        <a href="/"><h1 class="gabble">gabble</h1></a>
         <div class="nav">
-          <a href="/gab">Create Gab</a>
+          <a href="/{{user.username}}/gab">Create Gab</a>
           <a href="/logout">Logout</a>
         </div>
+      </div>
         <form class="compose" action="/{{username}}/compose" method="post">
           <fieldset>
             <legend>Create new Gab</legend>
