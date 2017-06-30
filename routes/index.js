@@ -51,35 +51,36 @@ router.post('/signup', function(req, res) {
         email: newEmail
       })
       user.save().then(function(user) {
-        return res.redirect('/login')
-  //     }).catch(function(errors){
-  //       for (var i = 0; i < errors.errors.length; i++) {
-  //         const error = errors.errors[i]
-  //         if (error.path === 'username') {
-  //           usernameError = error.message
-  //         } else if (error.path === 'email') {
-  //           emailError = error.message
-  //         } else if (error.path === 'password') {
-  //           passwordError = error.message
-  //         }
-  //       }
-  })
+
+      }).catch(function(errors){
+        for (var i = 0; i < errors.errors.length; i++) {
+          const error = errors.errors[i]
+          if (error.path === 'username') {
+            usernameError = error.message
+          } else if (error.path === 'email') {
+            emailError = error.message
+          } else if (error.path === 'password') {
+            passwordError = error.message
+          }
+        }
+      })
+              return res.redirect('/login')
 } else {
   passwordError = "Passwords do not match"
 }
 } else {
   usernameError = "That username already exists"
 }
-
+res.render('signup', {
+  email: newEmail,
+  username: newUsername,
+  usernameError: usernameError,
+  emailError: emailError,
+  passwordError: passwordError
+})
 })
 
-    // res.render('signup', {
-    //   email: newEmail,
-    //   username: newUsername,
-    //   usernameError: usernameError,
-    //   emailError: emailError,
-    //   passwordError: passwordError
-    // })
+
 })
 
 router.get('/login', function(req, res) {
@@ -123,6 +124,14 @@ router.get('/', function(req, res) {
     }).then(function(user) {
       models.Post.findAll({order: [['createdAt', 'DESC']]})
       .then(function(posts) {
+        for (var i = 0; i < posts.length; i++) {
+          const post = posts[i]
+          if (post.userId === sess.userId) {
+            post.delete = true
+          } else {
+            post.delete = false
+          }
+        }
         res.render('user', {
           user: user,
           gabs: posts
@@ -165,29 +174,92 @@ router.post('/:username/compose', function(req, res) {
 router.get('/like/:id', function(req, res) {
   sess = req.session
   const postId = req.params.id
-  const like = models.Like.build({
-    userId: sess.userId,
-    postId: postId
-  })
-  like.save().then(function(like) {
-    console.log(like);
-  })
-  const likes = models.Like.findAll({
+  models.Like.findOne({
     where: {
       postId: postId,
-    },
-    include: [
-      {model: models.User,
-      as: 'user'}
-    ]
-  })
-.then(function(likes) {
-  for (var i = 0; i < likes.length; i++) {
-    const user = likes[i].user
-        console.log('username', user.username);
-        console.log('likes', likes.length);
-  }
+      userId: sess.userId
+    }
+  }).then(function(liked) {
+    if (!liked) {
+      const like = models.Like.build({
+        userId: sess.userId,
+        postId: postId
+      })
+      like.save().then(function(like) {
+        console.log(like);
+      })
+      const likes = models.Like.findAll({
+        where: {
+          postId: postId,
+        },
+        include: [
+          {model: models.User,
+          as: 'user'}
+        ]
+      })
+    .then(function(likes) {
+      for (var i = 0; i < likes.length; i++) {
+        const user = likes[i].user
+            console.log('username', user.username);
+            console.log('likes', likes.length);
+      }
 
+      })
+
+    } else {
+      console.log("already liked!");
+    }
+  })
+
+})
+
+router.get('/gab/:id', function(req, res) {
+  sess = req.sess
+  const postId = req.params.id
+  let users = []
+  models.Post.findOne({
+    where: {
+      id: postId
+    }
+  }).then(function(post) {
+    models.Like.findAll({
+      where: {
+        postId: postId,
+      },
+      include: [
+        {
+          model: models.User,
+          as: 'user'
+        }
+      ]
+    })
+    .then(function(likes) {
+      for (var i = 0; i < likes.length; i++) {
+        const user = likes[i].user
+        users.push(user.username)
+      }
+      console.log(users);
+      const likesNumber = likes.length
+      res.render('gab', {
+        users: users,
+        likesNumber: likesNumber,
+        post: post
+      })
+    })
+  })
+
+})
+
+router.get('/:id/gabs', function(req, res) {
+  sess = req.session
+  models.Post.findAll({
+    where: {
+      userId: req.params.id
+    }
+  }).then(function(posts) {
+    res.render('userGabs', {
+      gabs: posts
+    })
   })
 })
 

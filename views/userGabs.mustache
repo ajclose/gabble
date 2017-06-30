@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>{{user.username}}</title>
+    <title>{{username}}</title>
     <link rel="stylesheet" href="/css/master.css">
   </head>
   <body>
@@ -25,14 +25,9 @@
               <a href="/gab/{{id}}">{{text}}</a>
             </div>
             <a href="/like/{{id}}">Like</a>
-            {{#delete}}
-            <a href="#">
-            Delete</a>
-            {{/delete}}
           </div>
             {{/gabs}}
           </div>
     </div>
-
   </body>
 </html>

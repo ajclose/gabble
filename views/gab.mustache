@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Gab</title>
+    <link rel="stylesheet" href="/css/master.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Gabble</h1>
+        <div class="nav">
+          <a href="/{{user.username}}/gab">Create Gab</a>
+          <a href="/logout">Logout</a>
+        </div>
+      </div>
+          <div class="gab">
+            {{post.author}}
+            {{post.text}}
+
+          </div>
+          Likes: {{likesNumber}}
+          liked by:
+          {{#users}}
+          <div class="user-like">
+                        {{.}}
+          </div>
+
+          {{/users}}
+
+    </div>
+  </body>
+</html>
