@@ -19,3 +19,8 @@
 .nav {
   display: flex;
 }
+
+.gab {
+  border: 2px solid black;
+  margin: 10px;
+}

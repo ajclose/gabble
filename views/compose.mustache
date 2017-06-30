@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>New Gab!</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Gabble</h1>
+        <div class="nav">
+          <a href="/gab">Create Gab</a>
+          <a href="/logout">Logout</a>
+        </div>
+        <form class="compose" action="/{{username}}/compose" method="post">
+          <fieldset>
+            <legend>Create new Gab</legend>
+            <textarea name="gab" rows="8" cols="80" placeholder="A penny for your thoughts..."></textarea>
+            <input type="submit" name="save" value="Save Gab">
+          </fieldset>
+        </form>
+
+  </body>
+</html>

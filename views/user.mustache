@@ -10,11 +10,23 @@
       <div class="header">
         <h1>Gabble</h1>
         <div class="nav">
-          <a href="/gab">Create Gab</a>
+          <a href="/{{user.username}}/gab">Create Gab</a>
           <a href="/logout">Logout</a>
         </div>
       </div>
-          Hello {{user.username}}!
+          <h3>Hello {{user.username}}!</h3>
+          <div class="gabs">
+            {{#gabs}}
+          <div class="gab">
+            <div class="author">
+              {{author}}
+            </div>
+            <div class="post">
+              {{text}}
+            </div>
+          </div>
+            {{/gabs}}
+          </div>
     </div>
 
   </body>

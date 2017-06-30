@@ -120,10 +120,15 @@ router.get('/', function(req, res) {
         username: sess.userName
       }
     }).then(function(user) {
-      res.render('user', {
-        user: user
+      models.Post.findAll({order: [['createdAt', 'DESC']]})
+      .then(function(posts) {
+        res.render('user', {
+          user: user,
+          gabs: posts
+        })
+        })
       })
-      })
+
   } else {
     res.redirect('/login')
   }
@@ -134,6 +139,25 @@ router.get('/logout', function(req, res) {
   sess = req.session
   sess.userName = ''
   res.redirect('/login')
+})
+
+router.get('/:username/gab', function(req, res) {
+  sess = req.session
+  res.render('compose', {
+    username: req.params.username
+  })
+})
+
+router.post('/:username/compose', function(req, res) {
+  sess = req.session
+  const text = req.body.gab
+  const post = models.Post.build({
+    text: text,
+    author: req.params.username
+  })
+  post.save().then(function(post) {
+    res.redirect('/')
+  })
 })
 
 module.exports = router
