@@ -39,12 +39,14 @@ module.exports = function(sequelize, DataTypes) {
     },
     bio: DataTypes.TEXT,
     image: DataTypes.STRING
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
-  });
+  }, {});
+
+  User.associate = function(models) {
+    User.hasMany(models.Post, {as: 'post', foreignKey: 'userId'})
+    User.hasMany(models.Like, {as: 'like', foreignKey: 'userId'})
+  }
+
+
+
   return User;
 };

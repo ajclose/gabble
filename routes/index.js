@@ -102,6 +102,7 @@ router.post('/verify', function(req, res) {
   }).then(function(user) {
     if (user && user.password === password) {
         sess.userName = username
+        sess.userId = user.id
         return res.redirect('/')
     } else {
         errorMessage = "Username or password is incorrect"
@@ -153,10 +154,40 @@ router.post('/:username/compose', function(req, res) {
   const text = req.body.gab
   const post = models.Post.build({
     text: text,
-    author: req.params.username
+    author: req.params.username,
+    userId: sess.userId
   })
   post.save().then(function(post) {
     res.redirect('/')
+  })
+})
+
+router.get('/like/:id', function(req, res) {
+  sess = req.session
+  const postId = req.params.id
+  const like = models.Like.build({
+    userId: sess.userId,
+    postId: postId
+  })
+  like.save().then(function(like) {
+    console.log(like);
+  })
+  const likes = models.Like.findAll({
+    where: {
+      postId: postId,
+    },
+    include: [
+      {model: models.User,
+      as: 'user'}
+    ]
+  })
+.then(function(likes) {
+  for (var i = 0; i < likes.length; i++) {
+    const user = likes[i].user
+        console.log('username', user.username);
+        console.log('likes', likes.length);
+  }
+
   })
 })
 
