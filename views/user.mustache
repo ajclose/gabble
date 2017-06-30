@@ -26,8 +26,9 @@
             </div>
             <a href="/like/{{id}}">Like</a>
             {{#delete}}
-            <a href="#">
-            Delete</a>
+            <form class="delete" action="/delete/{{id}}" method="post">
+              <input type="submit" name="delete" value="Delete">
+            </form>
             {{/delete}}
           </div>
             {{/gabs}}

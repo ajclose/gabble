@@ -263,4 +263,21 @@ router.get('/:id/gabs', function(req, res) {
   })
 })
 
+router.post('/delete/:id', function(req, res) {
+  sess = req.session
+  models.Like.destroy({
+    where: {
+      postId: req.params.id
+    }
+  }).then(function(post) {
+    models.Post.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.redirect('/')
+    })
+  })
+
+
 module.exports = router
