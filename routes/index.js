@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const models = require("../models")
 let sess;
+let errorMessage;
 // const Busboy = require('busboy')
 // const path = require('path')
 // const fs = require('fs')
@@ -23,10 +24,12 @@ router.use(session({
 }))
 
 router.get('/signup', function(req, res) {
+  sess = req.session
   res.render('signup')
 })
 
 router.post('/signup', function(req, res) {
+  sess = req.session
   const newEmail = req.body.email
   const newUsername = req.body.username
   const newPassword = req.body.password
@@ -34,36 +37,57 @@ router.post('/signup', function(req, res) {
   let usernameError
   let emailError
   let passwordError
-  const user = models.User.build({
-    username: newUsername,
-    password: newPassword,
-    email: newEmail
-  })
-  user.save().then(function(user) {
-    res.redirect('/login')
-  }).catch(function(errors){
-    for (var i = 0; i < errors.errors.length; i++) {
-      const error = errors.errors[i]
-      if (error.path === 'username') {
-        usernameError = error.message
-      } else if (error.path === 'email') {
-        emailError = error.message
-      } else if (error.path === 'password') {
-        passwordError = error.message
-      }
+  models.User.findOne({
+    where: {
+      username: newUsername
     }
-    res.render('signup', {
-      email: newEmail,
-      username: newUsername,
-      usernameError: usernameError,
-      emailError: emailError,
-      passwordError: passwordError
-    })
+  }).then(function(user) {
+    console.log(user);
+    if (!user) {
+      if (newPassword === confirmPassword) {
+      const user = models.User.build({
+        username: newUsername,
+        password: newPassword,
+        email: newEmail
+      })
+      user.save().then(function(user) {
+        return res.redirect('/login')
+  //     }).catch(function(errors){
+  //       for (var i = 0; i < errors.errors.length; i++) {
+  //         const error = errors.errors[i]
+  //         if (error.path === 'username') {
+  //           usernameError = error.message
+  //         } else if (error.path === 'email') {
+  //           emailError = error.message
+  //         } else if (error.path === 'password') {
+  //           passwordError = error.message
+  //         }
+  //       }
+  })
+} else {
+  passwordError = "Passwords do not match"
+}
+} else {
+  usernameError = "That username already exists"
+}
+
 })
+
+    // res.render('signup', {
+    //   email: newEmail,
+    //   username: newUsername,
+    //   usernameError: usernameError,
+    //   emailError: emailError,
+    //   passwordError: passwordError
+    // })
 })
 
 router.get('/login', function(req, res) {
-  res.render('login')
+  sess = req.session
+  console.log('errorMessage',errorMessage);
+  res.render('login', {
+    errorMessage: errorMessage
+  })
 })
 
 router.post('/verify', function(req, res) {
@@ -76,11 +100,12 @@ router.post('/verify', function(req, res) {
       username: username
     }
   }).then(function(user) {
-    console.log(user);
-    if(user.password === password) {
-      console.log(true);
-      sess.userName = username
-      return res.redirect('/')
+    if (user && user.password === password) {
+        sess.userName = username
+        return res.redirect('/')
+    } else {
+        errorMessage = "Username or password is incorrect"
+        return res.redirect('/login')
     }
   })
 })
