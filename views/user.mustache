@@ -4,11 +4,12 @@
     <meta charset="utf-8">
     <title>{{user.username}}</title>
     <link rel="stylesheet" href="/css/master.css">
+    <script src="https://use.fontawesome.com/e301358b80.js"></script>
   </head>
   <body>
     <div class="container">
       <div class="header">
-        <h1>Gabble</h1>
+        <a href="/"><h1>Gabble</h1></a>
         <div class="nav">
           <a href="/{{user.username}}/gab">Create Gab</a>
           <a href="/logout">Logout</a>
@@ -17,23 +18,30 @@
           <h3>Hello {{user.username}}!</h3>
           <div class="gabs">
             {{#gabs}}
+            <a href="/gab/{{id}}">
           <div class="gab">
             <div class="author">
               {{author}}
             </div>
             <div class="post">
-              <a href="/gab/{{id}}">{{text}}</a>
+              {{text}}
             </div>
-            <a href="/like/{{id}}">Like</a>
+            {{#like}}
+            <a href="/unlike/{{id}}"><i class="fa fa-heart" aria-hidden="true"></i></a>
+            {{/like}}
+            {{^like}}
+            <a href="/like/{{id}}"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+            {{/like}}
             {{#delete}}
             <form class="delete" action="/delete/{{id}}" method="post">
               <input type="submit" name="delete" value="Delete">
             </form>
             {{/delete}}
           </div>
+          </a>
             {{/gabs}}
           </div>
     </div>
-
+<script src="/js/client.js" charset="utf-8"></script>
   </body>
 </html>

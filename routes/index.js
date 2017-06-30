@@ -117,32 +117,46 @@ router.get('/', function(req, res) {
   sess = req.session
   console.log("made it!");
   if (sess.userName) {
-    models.User.findOne({
+    models.Like.findAll({
       where: {
-        username: sess.userName
+        userId: sess.userId
       }
-    }).then(function(user) {
-      models.Post.findAll({order: [['createdAt', 'DESC']]})
-      .then(function(posts) {
-        for (var i = 0; i < posts.length; i++) {
-          const post = posts[i]
-          if (post.userId === sess.userId) {
-            post.delete = true
-          } else {
-            post.delete = false
-          }
+    })
+    .then(function(likes) {
+      models.User.findOne({
+        where: {
+          username: sess.userName
         }
-        res.render('user', {
-          user: user,
-          gabs: posts
-        })
-        })
-      })
+      }).then(function(user) {
+        models.Post.findAll({order: [['createdAt', 'DESC']]})
+        .then(function(posts) {
+          for (var i = 0; i < posts.length; i++) {
+            const post = posts[i]
+            post.like = false
+            if (post.userId === sess.userId) {
+              post.delete = true
+            } else {
+              post.delete = false
+            }
+            for (var j = 0; j < likes.length; j++) {
+              const like = likes[j]
+              if(post.id === like.postId) {
+              post.like = true
+            }
+          }
+            console.log(post.like);
+            }
 
+          res.render('user', {
+            user: user,
+            gabs: posts
+          })
+          })
+        })
+    })
   } else {
     res.redirect('/login')
   }
-
 })
 
 router.get('/logout', function(req, res) {
@@ -171,50 +185,79 @@ router.post('/:username/compose', function(req, res) {
   })
 })
 
+// router.get('/like/:id', function(req, res) {
+//   sess = req.session
+//   const postId = req.params.id
+//   models.Like.findOne({
+//     where: {
+//       postId: postId,
+//       userId: sess.userId
+//     }
+//   }).then(function(liked) {
+//     if (!liked) {
+//       const like = models.Like.build({
+//         userId: sess.userId,
+//         postId: postId
+//       })
+//       like.save().then(function(like) {
+//         console.log(like);
+//       })
+//       const likes = models.Like.findAll({
+//         where: {
+//           postId: postId,
+//         },
+//         include: [
+//           {model: models.User,
+//           as: 'user'}
+//         ]
+//       })
+//     .then(function(likes) {
+//       for (var i = 0; i < likes.length; i++) {
+//         const user = likes[i].user
+//             console.log('username', user.username);
+//             console.log('likes', likes.length);
+//       }
+//
+//       })
+//
+//     } else {
+//       console.log("already liked!");
+//
+//     }
+//           res.redirect('/')
+//   })
+//
+// })
+
 router.get('/like/:id', function(req, res) {
   sess = req.session
   const postId = req.params.id
-  models.Like.findOne({
+  models.Like.build({
+      postId: postId,
+      userId: sess.userId
+  }).save().then(function(like) {
+    console.log("liked!", like);
+    res.redirect('/')
+  })
+})
+
+
+router.get('/unlike/:id', function(req, res) {
+  sess = req.session
+  const postId = req.params.id
+  models.Like.destroy({
     where: {
       postId: postId,
       userId: sess.userId
     }
-  }).then(function(liked) {
-    if (!liked) {
-      const like = models.Like.build({
-        userId: sess.userId,
-        postId: postId
-      })
-      like.save().then(function(like) {
-        console.log(like);
-      })
-      const likes = models.Like.findAll({
-        where: {
-          postId: postId,
-        },
-        include: [
-          {model: models.User,
-          as: 'user'}
-        ]
-      })
-    .then(function(likes) {
-      for (var i = 0; i < likes.length; i++) {
-        const user = likes[i].user
-            console.log('username', user.username);
-            console.log('likes', likes.length);
-      }
-
-      })
-
-    } else {
-      console.log("already liked!");
-    }
+  }).then(function() {
+    console.log("unliked!");
+    res.redirect('/')
   })
-
 })
 
 router.get('/gab/:id', function(req, res) {
-  sess = req.sess
+  sess = req.session
   const postId = req.params.id
   let users = []
   models.Post.findOne({
@@ -243,7 +286,8 @@ router.get('/gab/:id', function(req, res) {
       res.render('gab', {
         users: users,
         likesNumber: likesNumber,
-        post: post
+        post: post,
+        username: sess.userName
       })
     })
   })
