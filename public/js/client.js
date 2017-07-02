@@ -8,5 +8,5 @@ if (deleteForm){
     })
 
   }
-  
+
 }
