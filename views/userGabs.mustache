@@ -16,18 +16,36 @@
           <a href="/logout">Logout</a>
         </div>
       </div>
-          <h3>Hello {{user.username}}!</h3>
+      <div class="user-info">
+        <h3>{{user.username}}</h3>
+        <img src="/uploads/{{user.image}}" alt="">
+        <div class="bio">
+          bio: {{user.bio}}
+        </div>
+      </div>
           <div class="gabs">
             {{#gabs}}
+            <a href="/gab/{{id}}">
           <div class="gab">
             <div class="author">
-              {{author}}
+              <a href="/{{userId}}">{{author}}</a>
             </div>
             <div class="post">
-              <a href="/gab/{{id}}">{{text}}</a>
+              {{text}}
             </div>
-            <a href="/like/{{id}}">Like</a>
+            {{#like}}
+            <a href="/unlike/{{id}}"><i class="fa fa-heart"></i></a>
+            {{/like}}
+            {{^like}}
+            <a href="/like/{{id}}"><i class="fa fa-heart-o"></i></a>
+            {{/like}}
+            {{#delete}}
+            <form class="delete" action="/delete/{{id}}" method="post">
+              <input type="submit" name="delete" value="Delete">
+            </form>
+            {{/delete}}
           </div>
+          </a>
             {{/gabs}}
           </div>
     </div>

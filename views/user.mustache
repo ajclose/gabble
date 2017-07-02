@@ -13,18 +13,27 @@
         <a href="/"><h1 class="gabble">gabble</h1></a>
         <div class="nav">
           <a href="/{{user.username}}/gab">Create Gab</a>
+          <a href="/{{user.id}}">Profile</a>
           <a href="/logout">Logout</a>
+          <a href="/user/edit">edit</a>
         </div>
       </div>
           <h3>Hello {{user.username}}!</h3>
           <div class="gabs">
             {{#gabs}}
-            <a href="/gab/{{id}}">
+
+
           <div class="gab">
+            <a href="/{{userId}}"><img class="user-image" src="/uploads/{{image}}" alt=""></a>
+            <a href="/gab/{{id}}">
+              <div class="post">
+
+
+
             <div class="author">
-              {{author}}
+              {{author}} - {{createdAt}}
             </div>
-            <div class="post">
+            <div class="text">
               {{text}}
             </div>
             {{#like}}
@@ -38,8 +47,10 @@
               <input type="submit" name="delete" value="Delete">
             </form>
             {{/delete}}
+              </div>
+            </a>
           </div>
-          </a>
+
             {{/gabs}}
           </div>
     </div>
