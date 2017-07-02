@@ -158,7 +158,8 @@ router.get('/', function(req, res) {
               }
 
               res.render('user', {
-                // user: user,
+                user: sess.userName,
+                userId: sess.userId,
                 gabs: posts
               })
             })
