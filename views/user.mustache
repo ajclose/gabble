@@ -12,10 +12,10 @@
       <div class="header">
         <a href="/"><h1 class="gabble">gabble</h1></a>
         <div class="nav">
-          <a href="/{{user}}/gab">Create Gab</a>
-          <a href="/{{userId}}">Profile</a>
+          <a href="/user/{{userId}}/gab">Create Gab</a>
+          <a href="/user/{{userId}}">Profile</a>
           <a href="/logout">Logout</a>
-          <a href="/user/edit">edit</a>
+          <a href="/user/{{userId}}/edit">edit</a>
         </div>
       </div>
           <h3>Hello {{user}}!</h3>
@@ -24,24 +24,24 @@
 
 
           <div class="gab">
-            <a href="/{{userId}}"><img class="user-image" src="/uploads/{{image}}" alt=""></a>
-            <a href="/gab/{{id}}">
+            <a href="/user/{{user.id}}"><img class="user-image" src="/uploads/{{user.image}}" alt=""></a>
+            <a href="/user/{{user.id}/{{id}}">
               <div class="post">
 
 
 
             <div class="author">
-              {{author}} - {{createdAt}}
+              {{user.username}} - {{createdAt}}
             </div>
             <div class="text">
               {{text}}
             </div>
-            {{#like}}
+            {{#liked}}
             <a href="/unlike/{{id}}"><i class="fa fa-heart"></i></a>
-            {{/like}}
-            {{^like}}
+            {{/liked}}
+            {{^liked}}
             <a href="/like/{{id}}"><i class="fa fa-heart-o"></i></a>
-            {{/like}}
+            {{/liked}}
             {{#delete}}
             <form class="delete" action="/delete/{{id}}" method="post">
               <input type="submit" name="delete" value="Delete">

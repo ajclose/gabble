@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const mustache = require('mustache-express')
 const router = require('./routes/index')
+const userRouter = require('./routes/user')
 const bodyParser = require('body-parser')
 const models = require('./models')
 const Busboy = require('busboy')
@@ -20,3 +21,4 @@ app.listen(3000, function() {
 })
 
 app.use('/', router)
+app.use('/user', userRouter)

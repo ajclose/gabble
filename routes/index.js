@@ -34,6 +34,7 @@ router.post('/signup', function(req, res) {
   const newUsername = req.body.username
   const newPassword = req.body.password
   const confirmPassword = req.body.confirmPassword
+  const userImage = "default.jpg"
   let usernameError
   let emailError
   let passwordError
@@ -48,7 +49,8 @@ router.post('/signup', function(req, res) {
         const user = models.User.build({
           username: newUsername,
           password: newPassword,
-          email: newEmail
+          email: newEmail,
+          image: userImage
         })
         user.save().then(function(user) {
 
@@ -104,7 +106,7 @@ router.post('/verify', function(req, res) {
     if (user && user.password === password) {
       sess.userName = username
       sess.userId = user.id
-      return res.redirect('/')
+      return res.redirect('/user')
     } else {
       errorMessage = "Username or password is incorrect"
       return res.redirect('/login')
@@ -112,63 +114,20 @@ router.post('/verify', function(req, res) {
   })
 })
 
+// router.use('/user', function(req, res, next) {
+//   sess = req.session
+//   if (sess.userName) {
+//     next()
+//   } else {
+//     res.redirect('/login')
+//   }
+// })
 
-router.get('/', function(req, res) {
-  sess = req.session
-  console.log("made it!");
-  if (sess.userName) {
-    models.Like.findAll({
-        where: {
-          userId: sess.userId
-        }
-      })
-      .then(function(likes) {
-        models.User.findAll()
-        .then(function(users) {
-          models.Post.findAll({
-              order: [
-                ['createdAt', 'DESC']
-              ]
-            })
-            .then(function(posts) {
-              for (var i = 0; i < posts.length; i++) {
-                const post = posts[i]
-                post.like = false
-                if (post.userId === sess.userId) {
-                  post.delete = true
-                } else {
-                  post.delete = false
-                }
-                for (var j = 0; j < likes.length; j++) {
-                  const like = likes[j]
-                  if (post.id === like.postId) {
-                    post.like = true
-                  }
-                }
-                for (var k = 0; k < users.length; k++) {
-                  const user = users[k]
-                  if (post.userId === user.id) {
-                    post.userName = user.username
-                    post.image = user.image
-                  }
-                }
+// router.get('/user', function(req, res) {
+//   res.send("you have made it!")
+// })
 
-                console.log(post.userName);
-                console.log(post.image);
-              }
 
-              res.render('user', {
-                user: sess.userName,
-                userId: sess.userId,
-                gabs: posts
-              })
-            })
-        })
-      })
-  } else {
-    res.redirect('/login')
-  }
-})
 
 router.get('/logout', function(req, res) {
   sess = req.session
@@ -303,27 +262,7 @@ router.get('/gab/:id', function(req, res) {
 
 })
 
-router.get('/:id', function(req, res) {
-  sess = req.session
-  models.User.findOne({
-    where: {
-      id: req.params.id
-    }
-  }).then(function(user) {
-    models.Post.findAll({
-      where: {
-        userId: req.params.id
-      }
-    }).then(function(posts) {
-      res.render('userGabs', {
-        gabs: posts,
-        user: user
-      })
-    })
 
-  })
-
-})
 
 
 
@@ -364,7 +303,6 @@ router.post('/user/edit', function(req, res) {
         file.on('end', function() {
         });
       } else {
-        userImage = 'default.jpg'
         file.resume()
       }
       });

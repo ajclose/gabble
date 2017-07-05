@@ -50,6 +50,7 @@ img {
 
 .nav a {
   margin: 20px;
+  font-size: 20px;
 }
 
 form {
@@ -74,6 +75,11 @@ form input {
   font-size: 16px;
   margin: 5px;
   padding: 2px;
+}
+
+.error {
+  color: #e74c3c;
+  text-align: center;
 }
 
 .gab {
