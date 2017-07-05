@@ -11,9 +11,9 @@
     <div class="container">
 
       <div class="header">
-        <a href="/"><h1 class="gabble">gabble</h1></a>
+        <a href="/user"><h1 class="gabble">gabble</h1></a>
         <div class="nav">
-          <a href="/user/{{userId}}/gab">Create Gab</a>
+          <a href="/user/{{userId}}/create">Create Gab</a>
           <a href="/user/{{userId}}">Profile</a>
           <a href="/logout">Logout</a>
           <a href="/user/{{userId}}/edit">edit</a>
@@ -27,7 +27,7 @@
 
           <div class="gab">
             <a href="/user/{{user.id}}"><img class="user-image" src="/uploads/{{user.image}}" alt=""></a>
-            <a href="/user/{{user.id}/{{id}}">
+            <a href="/user/{{user.id}}/gab/{{id}}">
               <div class="post">
 
 
@@ -46,7 +46,7 @@
             <a href="/user/like/{{id}}"><i class="fa fa-heart-o"></i></a>
             {{/liked}}
             {{#delete}}
-            <form class="delete" action="/delete/{{id}}" method="post">
+            <form class="delete" action="/user/delete/{{id}}" method="post">
               <input type="submit" name="delete" value="Delete">
             </form>
             {{/delete}}

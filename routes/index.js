@@ -135,25 +135,9 @@ router.get('/logout', function(req, res) {
   res.redirect('/login')
 })
 
-router.get('/:username/gab', function(req, res) {
-  sess = req.session
-  res.render('compose', {
-    username: req.params.username
-  })
-})
 
-router.post('/:username/compose', function(req, res) {
-  sess = req.session
-  const text = req.body.gab
-  const post = models.Post.build({
-    text: text,
-    author: req.params.username,
-    userId: sess.userId
-  })
-  post.save().then(function(post) {
-    res.redirect('/')
-  })
-})
+
+
 
 // router.get('/like/:id', function(req, res) {
 //   sess = req.session
@@ -201,110 +185,17 @@ router.post('/:username/compose', function(req, res) {
 
 
 
-router.get('/gab/:id', function(req, res) {
-  sess = req.session
-  const postId = req.params.id
-  let users = []
-  models.Post.findOne({
-    where: {
-      id: postId
-    }
-  }).then(function(post) {
-    models.Like.findAll({
-        where: {
-          postId: postId,
-        },
-        include: [{
-          model: models.User,
-          as: 'user'
-        }]
-      })
-      .then(function(likes) {
-        for (var i = 0; i < likes.length; i++) {
-          const user = likes[i].user
-          users.push(user.username)
-        }
-        console.log(users);
-        const likesNumber = likes.length
-        res.render('gab', {
-          users: users,
-          likesNumber: likesNumber,
-          post: post,
-          username: sess.userName
-        })
-      })
-  })
-
-})
 
 
 
 
 
-router.post('/delete/:id', function(req, res) {
-  sess = req.session
-  models.Like.destroy({
-    where: {
-      postId: req.params.id
-    }
-  }).then(function(post) {
-    models.Post.destroy({
-      where: {
-        id: req.params.id
-      }
-    })
-    res.redirect('/')
-  })
-})
 
-router.get('/user/edit', function(req, res) {
-  sess = req.session
-  let userImage;
-  let bio;
-  res.render('edit')
-})
 
-router.post('/user/edit', function(req, res) {
-  sess = req.session
-  var busboy = new Busboy({ headers: req.headers });
 
-  busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
 
-    if (filename) {
-      userImage = sess.userId + ".jpg"
-      var saveTo = path.join('./public/uploads/', path.basename(userImage));
-      file.pipe(fs.createWriteStream(saveTo));
 
-        file.on('end', function() {
-        });
-      } else {
-        file.resume()
-      }
-      });
 
-      busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
-        if (fieldname === 'bio') {
-          bio = val
-        }
-      });
-      busboy.on('finish', function() {
-        models.User.findOne({
-          where: {
-            id: sess.userId
-          }
-        }).then(function(user) {
-          user.bio = bio
-          user.image = userImage
-          user.save()
-          .then( function(user) {
-              return res.redirect('/')
-          })
-        })
-
-      });
-      req.pipe(busboy);
-
-})
 
 
 

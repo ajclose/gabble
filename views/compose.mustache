@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>{{user.username}}</title>
+    <title>Gab!</title>
     <link rel="stylesheet" href="/css/master.css">
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
     <link rel="stylesheet" href="/font-awesome/css/font-awesome.css">
@@ -10,13 +10,13 @@
   <body>
     <div class="container">
       <div class="header">
-        <a href="/"><h1 class="gabble">gabble</h1></a>
+        <a href="/user"><h1 class="gabble">gabble</h1></a>
         <div class="nav">
-          <a href="/{{user.username}}/gab">Create Gab</a>
+          <a href="/user/{{userId}}/gab">Create Gab</a>
           <a href="/logout">Logout</a>
         </div>
       </div>
-        <form class="compose" action="/{{username}}/compose" method="post">
+        <form class="compose" action="/user/{{userId}}/compose" method="post">
           <fieldset>
             <legend>Create new Gab</legend>
             <textarea name="gab" rows="8" cols="80" placeholder="A penny for your thoughts..."></textarea>

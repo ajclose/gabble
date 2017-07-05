@@ -10,25 +10,49 @@
   <body>
     <div class="container">
       <div class="header">
-        <a href="/"><h1 class="gabble">gabble</h1></a>
+        <a href="/user"><h1 class="gabble">gabble</h1></a>
         <div class="nav">
-          <a href="/{{user.username}}/gab">Create Gab</a>
+          <a href="/user/{{userId}}/gab">Create Gab</a>
+          <a href="/user/{{userId}}">Profile</a>
           <a href="/logout">Logout</a>
         </div>
       </div>
-          <div class="gab">
-            {{post.author}}
-            {{post.text}}
+      <div class="gab">
+        <a href="/user/{{post.user.id}}"><img class="user-image" src="/uploads/{{post.user.image}}" alt=""></a>
+        <a href="/user/{{post.user.id}}/{{post.id}}">
+          <div class="post">
 
+
+
+        <div class="author">
+          {{post.user.username}} - {{post.createdAt}}
+        </div>
+        <div class="text">
+          {{post.text}}
+        </div>
+        {{likeCount}}
+        {{#liked}}
+        <a href="/user/unlike/{{id}}"><i class="fa fa-heart"></i></a>
+        {{/liked}}
+        {{^liked}}
+        <a href="/user/like/{{id}}"><i class="fa fa-heart-o"></i></a>
+        {{/liked}}
+        {{#post.delete}}
+        <form class="delete" action="/user/delete/{{id}}" method="post">
+          <input type="submit" name="delete" value="Delete">
+        </form>
+        {{/post.delete}}
           </div>
-          Likes: {{likesNumber}}
+        </a>
+      </div>
+          Likes: {{likeCount}}
           liked by:
-          {{#users}}
+          {{#usersLiked}}
           <div class="user-like">
                         {{.}}
           </div>
 
-          {{/users}}
+          {{/usersLiked}}
 
     </div>
   </body>

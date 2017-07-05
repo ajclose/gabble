@@ -4,8 +4,10 @@ module.exports = function(sequelize, DataTypes) {
     text: {
       type: DataTypes.TEXT,
       validate: {
-        len: [1, 140],
-        msg: "Gab must be 1 - 140 characters!"
+        len: {
+          args: [1, 140],
+          msg: "Gab must be 1 - 140 characters!"
+        }
       }
     },
     author: DataTypes.STRING,

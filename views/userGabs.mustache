@@ -10,9 +10,10 @@
   <body>
     <div class="container">
       <div class="header">
-        <a href="/"><h1 class="gabble">gabble</h1></a>
+        <a href="/user"><h1 class="gabble">gabble</h1></a>
         <div class="nav">
           <a href="/{{user.username}}/gab">Create Gab</a>
+          <a href="/user/{{userId}}">Profile</a>
           <a href="/logout">Logout</a>
         </div>
       </div>
@@ -23,31 +24,41 @@
           bio: {{user.bio}}
         </div>
       </div>
-          <div class="gabs">
-            {{#gabs}}
-            <a href="/gab/{{id}}">
-          <div class="gab">
-            <div class="author">
-              <a href="/{{userId}}">{{author}}</a>
-            </div>
-            <div class="post">
-              {{text}}
-            </div>
-            {{#like}}
-            <a href="/unlike/{{id}}"><i class="fa fa-heart"></i></a>
-            {{/like}}
-            {{^like}}
-            <a href="/like/{{id}}"><i class="fa fa-heart-o"></i></a>
-            {{/like}}
-            {{#delete}}
-            <form class="delete" action="/delete/{{id}}" method="post">
-              <input type="submit" name="delete" value="Delete">
-            </form>
-            {{/delete}}
+      <div class="gabs">
+        {{#gabs}}
+
+
+      <div class="gab">
+        <a href="/user/{{user.id}}"><img class="user-image" src="/uploads/{{user.image}}" alt=""></a>
+        <a href="/user/{{user.id}/{{id}}">
+          <div class="post">
+
+
+
+        <div class="author">
+          {{user.username}} - {{createdAt}}
+        </div>
+        <div class="text">
+          {{text}}
+        </div>
+        {{likeCount}}
+        {{#liked}}
+        <a href="/user/unlike/{{id}}"><i class="fa fa-heart"></i></a>
+        {{/liked}}
+        {{^liked}}
+        <a href="/user/like/{{id}}"><i class="fa fa-heart-o"></i></a>
+        {{/liked}}
+        {{#delete}}
+        <form class="delete" action="/delete/{{id}}" method="post">
+          <input type="submit" name="delete" value="Delete">
+        </form>
+        {{/delete}}
           </div>
-          </a>
-            {{/gabs}}
-          </div>
+        </a>
+      </div>
+
+        {{/gabs}}
+      </div>
     </div>
   </body>
 </html>

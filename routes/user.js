@@ -105,46 +105,69 @@ router.get('/', function(req, res) {
     }
     res.render('user', {
       gabs: posts,
-      userName: sess.userName
+      userName: sess.userName,
+      userId: sess.userId
     })
   })
 })
 
 router.get('/:id', function(req, res) {
   sess = req.session
-  models.User.findOne({
+  models.Post.findAll({
     where: {
-      id: req.params.id
-    }
-  }).then(function(user) {
-    models.Post.findAll({
-      where: {
-        userId: req.params.id
+      userId: req.params.id
+    },
+    order: [
+      ['createdAt', 'DESC']
+    ],
+      include: [{
+        model: models.User,
+        as: 'user'
+      },{
+        model: models.Like,
+        as: 'like'
+      }]
+  }).then(function(posts) {
+    for (var i = 0; i < posts.length; i++) {
+      const post = posts[i]
+      post.likeCount = post.like.length
+      if (post.userId === sess.userId) {
+        post.delete = true
       }
-    }).then(function(posts) {
-      res.render('userGabs', {
-        gabs: posts,
-        user: user
-      })
+      post.liked = false
+      for (var j = 0; j < post.like.length; j++) {
+        const like = post.like[j]
+        if (like.userId === sess.userId) {
+          post.liked = true
+        }
+      }
+    }
+    res.render('userGabs', {
+      gabs: posts,
+      user: posts[0].user,
+      userName: sess.userName,
+      userId: sess.userId
     })
   })
 })
 
-router.get('/like/:id', function(req, res) {
+router.use('/like/:id', function(req, res, next) {
   sess = req.session
+  const prevPage = req.headers.referer.substring(21)
   const postId = req.params.id
   models.Like.build({
     postId: postId,
     userId: sess.userId
   }).save().then(function(like) {
     console.log("liked!", like);
-    res.redirect('/user')
+    res.redirect(prevPage)
   })
 })
 
 
-router.get('/unlike/:id', function(req, res) {
+router.use('/unlike/:id', function(req, res, next) {
   sess = req.session
+  const prevPage = req.headers.referer.substring(21)
   const postId = req.params.id
   models.Like.destroy({
     where: {
@@ -153,8 +176,146 @@ router.get('/unlike/:id', function(req, res) {
     }
   }).then(function() {
     console.log("unliked!");
-    res.redirect('/user')
+    res.redirect(prevPage)
   })
 })
+
+router.post('/delete/:id', function(req, res) {
+  sess = req.session
+  const prevPage = req.headers.referer.substring(21)
+  models.Like.destroy({
+    where: {
+      postId: req.params.id
+    }
+  }).then(function(post) {
+    models.Post.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.redirect(prevPage)
+  })
+})
+
+router.get('/:userId/gab/:gabId', function(req, res) {
+  sess = req.session
+  const postId = req.params.gabId
+  const userId = req.params.userId
+  let usersLiked = []
+  models.User.findAll()
+  .then(function(users) {
+    models.Post.findOne({
+      where: {
+        id: postId
+      },
+      include: [
+        {
+          model: models.Like,
+          as: 'like'
+        },
+        {
+          model: models.User,
+          as: 'user'
+        }
+      ]
+    }).then(function(post) {
+        const likeCount = post.like.length
+        for (var i = 0; i < likeCount; i++) {
+          const like = post.like[i]
+          for (var j = 0; j < users.length; j++) {
+            const user = users[j]
+            if (like.userId === user.id) {
+              usersLiked.push(user.username)
+            }
+          }
+          if (post.userId === sess.userId) {
+            post.delete = true
+            console.log(post.delete);
+          }
+          }
+          res.render('gab', {
+            usersLiked: usersLiked,
+            likeCount: likeCount,
+            post: post,
+            username: sess.userName,
+            userId: sess.userId
+          })
+        })
+  })
+
+  })
+
+  router.get('/:userId/create', function(req, res) {
+    sess = req.session
+    res.render('compose', {
+      userId: req.params.userId
+    })
+  })
+
+  router.post('/:userId/compose', function(req, res) {
+    sess = req.session
+    const text = req.body.gab
+    const post = models.Post.build({
+      text: text,
+      author: sess.userName,
+      userId: sess.userId
+    })
+    post.save().then(function(post) {
+      res.redirect('/user')
+    })
+  })
+
+  router.get('/:userId/edit', function(req, res) {
+    sess = req.session
+    let userImage;
+    let bio;
+    res.render('edit', {
+      userId: sess.userId
+    })
+  })
+
+  router.post('/:userId/edit', function(req, res) {
+    sess = req.session
+    var busboy = new Busboy({ headers: req.headers });
+
+    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+
+      if (filename) {
+        userImage = sess.userId + ".jpg"
+        var saveTo = path.join('./public/uploads/', path.basename(userImage));
+        file.pipe(fs.createWriteStream(saveTo));
+
+          file.on('end', function() {
+          });
+        } else {
+          file.resume()
+        }
+        });
+
+        busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
+          if (fieldname === 'bio') {
+            bio = val
+          }
+        });
+        busboy.on('finish', function() {
+          models.User.findOne({
+            where: {
+              id: sess.userId
+            }
+          }).then(function(user) {
+            user.bio = bio
+            user.image = userImage
+            user.save()
+            .then( function(user) {
+                return res.redirect('/user')
+            })
+          })
+
+        });
+        req.pipe(busboy);
+
+  })
+
+
 
 module.exports = router
