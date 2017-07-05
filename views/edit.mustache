@@ -10,13 +10,15 @@
   <body>
     <div class="container">
       <div class="header">
-        <a href="/"><h1 class="gabble">gabble</h1></a>
+        <a href="/user"><h1 class="gabble">gabble</h1></a>
         <div class="nav">
-          <a href="/{{user.username}}/gab">Create Gab</a>
-          <a href="/{{user.id}}">Profile</a>
+          <a href="/user">Home</a>
+          <a href="/user/{{userId}}">Profile</a>
+          <a href="/user/{{userId}}/create">Create Gab</a>
           <a href="/logout">Logout</a>
         </div>
       </div>
+      
       <form class="edit" action="/user/{{userId}}/edit" method="post" enctype="multipart/form-data">
         <fieldset>
           <legend>Edit Your Profile</legend>

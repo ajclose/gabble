@@ -12,17 +12,22 @@
       <div class="header">
         <a href="/user"><h1 class="gabble">gabble</h1></a>
         <div class="nav">
-          <a href="/{{user.username}}/gab">Create Gab</a>
+          <a href="/user">Home</a>
           <a href="/user/{{userId}}">Profile</a>
+          <a href="/user/{{userId}}/create">Create Gab</a>
           <a href="/logout">Logout</a>
         </div>
       </div>
+      
       <div class="user-info">
         <h3>{{user.username}}</h3>
         <img src="/uploads/{{user.image}}" alt="">
         <div class="bio">
           bio: {{user.bio}}
         </div>
+        {{#user.edit}}
+        <a href="/user/{{userId}}/edit">edit</a>
+        {{/user.edit}}
       </div>
       <div class="gabs">
         {{#gabs}}

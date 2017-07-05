@@ -133,6 +133,7 @@ router.get('/:id', function(req, res) {
       post.likeCount = post.like.length
       if (post.userId === sess.userId) {
         post.delete = true
+        post.user.edit = true
       }
       post.liked = false
       for (var j = 0; j < post.like.length; j++) {
@@ -142,6 +143,7 @@ router.get('/:id', function(req, res) {
         }
       }
     }
+
     res.render('userGabs', {
       gabs: posts,
       user: posts[0].user,
@@ -307,7 +309,7 @@ router.get('/:userId/gab/:gabId', function(req, res) {
             user.image = userImage
             user.save()
             .then( function(user) {
-                return res.redirect('/user')
+                return res.redirect(`/user/${sess.userId}`)
             })
           })
 
