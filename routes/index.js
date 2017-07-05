@@ -199,32 +199,7 @@ router.post('/:username/compose', function(req, res) {
 //
 // })
 
-router.get('/like/:id', function(req, res) {
-  sess = req.session
-  const postId = req.params.id
-  models.Like.build({
-    postId: postId,
-    userId: sess.userId
-  }).save().then(function(like) {
-    console.log("liked!", like);
-    res.redirect('/')
-  })
-})
 
-
-router.get('/unlike/:id', function(req, res) {
-  sess = req.session
-  const postId = req.params.id
-  models.Like.destroy({
-    where: {
-      postId: postId,
-      userId: sess.userId
-    }
-  }).then(function() {
-    console.log("unliked!");
-    res.redirect('/')
-  })
-})
 
 router.get('/gab/:id', function(req, res) {
   sess = req.session

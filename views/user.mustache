@@ -2,13 +2,14 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>{{user}}</title>
+    <title>Welcome {{userName}}!</title>
     <link rel="stylesheet" href="/css/master.css">
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
     <link rel="stylesheet" href="/font-awesome/css/font-awesome.css">
   </head>
   <body>
     <div class="container">
+
       <div class="header">
         <a href="/"><h1 class="gabble">gabble</h1></a>
         <div class="nav">
@@ -18,7 +19,8 @@
           <a href="/user/{{userId}}/edit">edit</a>
         </div>
       </div>
-          <h3>Hello {{user}}!</h3>
+
+          <h3>Hello {{userName}}!</h3>
           <div class="gabs">
             {{#gabs}}
 
@@ -36,11 +38,12 @@
             <div class="text">
               {{text}}
             </div>
+            {{likeCount}}
             {{#liked}}
-            <a href="/unlike/{{id}}"><i class="fa fa-heart"></i></a>
+            <a href="/user/unlike/{{id}}"><i class="fa fa-heart"></i></a>
             {{/liked}}
             {{^liked}}
-            <a href="/like/{{id}}"><i class="fa fa-heart-o"></i></a>
+            <a href="/user/like/{{id}}"><i class="fa fa-heart-o"></i></a>
             {{/liked}}
             {{#delete}}
             <form class="delete" action="/delete/{{id}}" method="post">

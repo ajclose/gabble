@@ -91,6 +91,7 @@ router.get('/', function(req, res) {
   }).then(function(posts) {
     for (var i = 0; i < posts.length; i++) {
       const post = posts[i]
+      post.likeCount = post.like.length
       if (post.userId === sess.userId) {
         post.delete = true
       }
@@ -103,7 +104,8 @@ router.get('/', function(req, res) {
       }
     }
     res.render('user', {
-      gabs: posts
+      gabs: posts,
+      userName: sess.userName
     })
   })
 })
@@ -125,6 +127,33 @@ router.get('/:id', function(req, res) {
         user: user
       })
     })
+  })
+})
+
+router.get('/like/:id', function(req, res) {
+  sess = req.session
+  const postId = req.params.id
+  models.Like.build({
+    postId: postId,
+    userId: sess.userId
+  }).save().then(function(like) {
+    console.log("liked!", like);
+    res.redirect('/user')
+  })
+})
+
+
+router.get('/unlike/:id', function(req, res) {
+  sess = req.session
+  const postId = req.params.id
+  models.Like.destroy({
+    where: {
+      postId: postId,
+      userId: sess.userId
+    }
+  }).then(function() {
+    console.log("unliked!");
+    res.redirect('/user')
   })
 })
 
