@@ -19,21 +19,21 @@ a {
 }
 
 img {
-  max-width: 100%;
+  max-width: 110%;
 }
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1020px;
-  border: 2px solid black;
+  width: 800px;
 }
 
 .header {
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: sans-serif;
 }
 
 .header a {
@@ -83,9 +83,13 @@ form input {
 }
 
 .gab {
-  border: 2px solid black;
-  margin: 10px;
+  margin: 15px;
   display: flex;
+  padding: 10px;
+  justify-content: space-around;
+  height: 20vh;
+  background-color: #ecf0f1;
+  width: 100%;
 }
 
 .gabble {
@@ -93,13 +97,128 @@ form input {
   font-size: 70px;
 }
 
+
 .user-image {
-  border-radius: 100%;
-  width: 25%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 10px;
+  overflow: hidden;
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .post {
   display: flex;
   flex-direction: column;
-  border: 2px solid blue;
+  justify-content: space-between;
+  width: 80%;
+  padding: 20px 5px;
+}
+
+.post a {
+  color: black;
+}
+
+.gabs {
+  background-color: rgba(0,0,0,.3);
+  padding: 25px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+}
+
+.post-footer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.likes {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.like-count {
+  font-size: 16px;
+  margin: 10px;
+}
+
+.delete {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.delete button {
+  font-size: 20px;
+  border: none;
+  background-color: #ecf0f1;
+  margin: 0 20px;
+}
+
+.fa {
+  color: #9b59b6;
+  font-size: 20px;
+}
+
+.author {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.user-info {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  height: 25vh;
+}
+
+.user-info img {
+  width: 25%;
+  border-radius: 50%;
+
+}
+
+.bio {
+  margin: 10px 50px;
+  display: flex;
+  flex-direction: column;
+  color: #ecf0f1;
+}
+
+.bio h3 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.edit {
+  align-self: flex-end;
+  text-align: left;
+  color: #ecf0f1;
+}
+
+.text {
+  margin-left: 5px;
+}
+
+.welcome {
+  color: #ecf0f1;
+  font-size: 25px;
+}
+
+form.compose {
+  display: flex;
+  flex-direction: column;
+}
+
+legend {
+  color: black;
 }

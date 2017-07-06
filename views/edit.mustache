@@ -18,12 +18,12 @@
           <a href="/logout">Logout</a>
         </div>
       </div>
-      
+
       <form class="edit" action="/user/{{userId}}/edit" method="post" enctype="multipart/form-data">
         <fieldset>
           <legend>Edit Your Profile</legend>
           <label for="bio">Bio</label>
-          <textarea name="bio" id="bio" rows="8" cols="80" value="{{bio}}"></textarea>
+          <textarea name="bio" id="bio" rows="8" cols="80" value="bio">{{user.bio}}</textarea>
           <input type="file" name="image" value="">
           <input type="submit" name="update" value="Update">
         </fieldset>

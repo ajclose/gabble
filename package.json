@@ -13,6 +13,7 @@
     "busboy": "^0.2.14",
     "express": "^4.15.3",
     "express-session": "^1.15.3",
+    "moment": "^2.18.1",
     "mustache-express": "^1.2.5",
     "pg": "^6.4.0",
     "sequelize": "^4.2.1"

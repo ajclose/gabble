@@ -4,6 +4,7 @@ const router = express.Router()
 // const bodyParser = require('body-parser')
 const session = require('express-session')
 const models = require("../models")
+const moment = require("moment")
 let sess;
 let errorMessage;
 const Busboy = require('busboy')
@@ -91,6 +92,8 @@ router.get('/', function(req, res) {
   }).then(function(posts) {
     for (var i = 0; i < posts.length; i++) {
       const post = posts[i]
+      post.date = moment(post.createdAt).format('MMMM Do YYYY')
+      console.log(post.date);
       post.likeCount = post.like.length
       if (post.userId === sess.userId) {
         post.delete = true
@@ -269,21 +272,28 @@ router.get('/:userId/gab/:gabId', function(req, res) {
 
   router.get('/:userId/edit', function(req, res) {
     sess = req.session
-    let userImage;
-    let bio;
-    res.render('edit', {
-      userId: sess.userId
+    models.User.findOne({
+      where: {
+        id: req.params.userId
+      }
+    }).then(function(user) {
+      res.render('edit', {
+        userId: sess.userId,
+        user: user
+      })
     })
+
   })
 
   router.post('/:userId/edit', function(req, res) {
     sess = req.session
+    let userImage;
+    let bio;
     var busboy = new Busboy({ headers: req.headers });
 
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-
-      if (filename) {
         userImage = sess.userId + ".jpg"
+      if (filename) {
         var saveTo = path.join('./public/uploads/', path.basename(userImage));
         file.pipe(fs.createWriteStream(saveTo));
 
