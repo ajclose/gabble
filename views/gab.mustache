@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/css/master.css">
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
     <link rel="stylesheet" href="/font-awesome/css/font-awesome.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
     <div class="container">
@@ -18,44 +19,60 @@
           <a href="/logout">Logout</a>
         </div>
       </div>
-      
+<div class="gabs">
+
+
       <div class="gab">
-        <a href="/user/{{post.user.id}}"><img class="user-image" src="/uploads/{{post.user.image}}" alt=""></a>
-        <a href="/user/{{post.user.id}}/{{post.id}}">
-          <div class="post">
+        <div class="image">
+            <a class="user-image" href="/user/{{user.id}}"><img src="/uploads/{{post.user.image}}" alt=""></a>
+        </div>
+        <div class="post">
 
 
+        <a class="post-link" href="/user/{{user.id}}/gab/{{id}}">
 
         <div class="author">
-          {{post.user.username}} - {{post.createdAt}}
+          {{post.user.username}} - {{post.date}}
         </div>
         <div class="text">
           {{post.text}}
         </div>
-        {{likeCount}}
-        {{#liked}}
-        <a href="/user/unlike/{{id}}"><i class="fa fa-heart"></i></a>
-        {{/liked}}
-        {{^liked}}
-        <a href="/user/like/{{id}}"><i class="fa fa-heart-o"></i></a>
-        {{/liked}}
+      </a>
+
+        <div class="post-footer">
+
+          <div class="likes">
+            <p class="like-count">{{likeCount}}</p>
+            {{#post.liked}}
+            <a href="/user/unlike/{{post.id}}"><i class="fa fa-heart"></i></a>
+            {{/post.liked}}
+            {{^post.liked}}
+            <a href="/user/like/{{post.id}}"><i class="fa fa-heart-o"></i></a>
+            {{/post.liked}}
+          </div>
+
         {{#post.delete}}
         <form class="delete" action="/user/delete/{{id}}" method="post">
-          <input type="submit" name="delete" value="Delete">
+          <button type="submit" name="delete"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </form>
         {{/post.delete}}
           </div>
-        </a>
+        </div>
       </div>
-          Likes: {{likeCount}}
-          liked by:
+      <div class="user-likes">
+
+
+          <!-- Likes: {{likeCount}} -->
+          <h3>Liked by:</h3>
           {{#usersLiked}}
           <div class="user-like">
                         {{.}}
           </div>
 
           {{/usersLiked}}
-
+      </div>
+      </div>
     </div>
+    <script src="/js/client.js" charset="utf-8"></script>
   </body>
 </html>

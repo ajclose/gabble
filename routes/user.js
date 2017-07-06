@@ -133,6 +133,7 @@ router.get('/:id', function(req, res) {
   }).then(function(posts) {
     for (var i = 0; i < posts.length; i++) {
       const post = posts[i]
+      post.date = moment(post.createdAt).format('MMMM Do YYYY')
       post.likeCount = post.like.length
       if (post.userId === sess.userId) {
         post.delete = true
@@ -225,8 +226,12 @@ router.get('/:userId/gab/:gabId', function(req, res) {
       ]
     }).then(function(post) {
         const likeCount = post.like.length
+        post.date = moment(post.createdAt).format('MMMM Do YYYY')
         for (var i = 0; i < likeCount; i++) {
           const like = post.like[i]
+          if (like.userId === sess.userId) {
+            post.liked = true
+          }
           for (var j = 0; j < users.length; j++) {
             const user = users[j]
             if (like.userId === user.id) {

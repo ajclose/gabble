@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/css/master.css">
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
     <link rel="stylesheet" href="/font-awesome/css/font-awesome.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
     <div class="container">
@@ -22,18 +23,21 @@
               <div class="signup-input" id="signup-email">
                 <label for="email">Email Address</label>
                 <input type="email" name="email" id="name" value="{{email}}" placeholder="Enter Email Address">
-                <p class="error">{{emailError}}</p>
               </div>
+                <p class="error">{{emailError}}</p>
+
               <div class="signup-input" id="signup-username">
                 <label for="username">Username</label>
                 <input type="text" name="username" id="username" value="{{username}}" placeholder="Enter Username">
+                              </div>
                 <p class="error">{{usernameError}}</p>
-              </div>
+
               <div class="signup-input" id="signup-password">
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" value="" placeholder="Enter Password">
+                              </div>
                 <p class="error">{{passwordError}}</p>
-              </div>
+
               <div class="signup-input" id="signup-confirm-password">
                 <label for="confirmPassword">Confirm Password</label>
                 <input type="password" name="confirmPassword" id="confirmPassword" value="" placeholder="Confirm Password">
