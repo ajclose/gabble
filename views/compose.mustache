@@ -18,11 +18,12 @@
           <a href="/logout">Logout</a>
         </div>
       </div>
-      
+
         <form class="compose" action="/user/{{userId}}/compose" method="post">
           <fieldset>
             <legend>Create new Gab</legend>
-            <textarea name="gab" rows="8" cols="80" placeholder="A penny for your thoughts..."></textarea>
+            <p class="error">{{errorMessage}}</p>
+            <textarea name="gab" rows="8" cols="80" placeholder="A penny for your thoughts...">{{text}}</textarea>
             <input type="submit" name="save" value="Save Gab">
           </fieldset>
         </form>

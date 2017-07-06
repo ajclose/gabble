@@ -222,3 +222,7 @@ form.compose {
 legend {
   color: black;
 }
+
+.error {
+  color: #c0392b;
+}

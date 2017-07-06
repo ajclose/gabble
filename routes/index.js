@@ -40,11 +40,16 @@ router.post('/signup', function(req, res) {
   let passwordError
   models.User.findOne({
     where: {
+      email: newEmail
+    }
+}).then(function(email) {
+  models.User.findOne({
+    where: {
       username: newUsername
     }
   }).then(function(user) {
-    console.log(user);
-    if (!user) {
+    if (!email) {
+      if (!user) {
       if (newPassword === confirmPassword) {
         const user = models.User.build({
           username: newUsername,
@@ -73,6 +78,9 @@ router.post('/signup', function(req, res) {
     } else {
       usernameError = "That username already exists"
     }
+  } else {
+    emailError = "That email is already registered"
+  }
     res.render('signup', {
       email: newEmail,
       username: newUsername,
@@ -81,7 +89,7 @@ router.post('/signup', function(req, res) {
       passwordError: passwordError
     })
   })
-
+})
 
 })
 

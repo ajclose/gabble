@@ -267,6 +267,12 @@ router.get('/:userId/gab/:gabId', function(req, res) {
     })
     post.save().then(function(post) {
       res.redirect('/user')
+    }).catch (function(error) {
+        res.render('compose', {
+          errorMessage: error.errors[0].message,
+          userId: req.params.userId,
+          text: text
+        })
     })
   })
 

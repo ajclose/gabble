@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
       validate: {
         len: {
           args: [1, 140],
-          msg: "Gab must be 1 - 140 characters!"
+          msg: "Gab must be 140 characters or less!"
         }
       }
     },
