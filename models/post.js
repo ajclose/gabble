@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
         }
       }
     },
-    author: DataTypes.STRING,
+    // author: DataTypes.STRING,
       }, {});
 
   Post.associate = function(models) {

@@ -226,7 +226,6 @@ router.post('/:userId/compose', function(req, res) {
   const text = req.body.gab
   const post = models.Post.build({
     text: text,
-    author: sess.userName,
     userId: sess.userId
   })
   post.save().then(function(post) {
