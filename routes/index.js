@@ -1,7 +1,5 @@
 const express = require('express')
 const router = express.Router()
-// const mustache = require('mustache-express')
-// const bodyParser = require('body-parser')
 const session = require('express-session')
 const models = require("../models")
 let sess;
@@ -9,13 +7,6 @@ let errorMessage;
 const Busboy = require('busboy')
 const path = require('path')
 const fs = require('fs')
-
-
-// router.engine('mustache', mustache() )
-// router.set('view engine', 'mustache')
-// router.use(express.static('public'))
-// router.use(bodyParser.urlencoded({ extended: false }));
-// router.use(bodyParser.json())
 
 router.use(session({
   secret: 'keyboard cat',
@@ -90,12 +81,10 @@ router.post('/signup', function(req, res) {
     })
   })
 })
-
 })
 
 router.get('/login', function(req, res) {
   sess = req.session
-  console.log('errorMessage', errorMessage);
   res.render('login', {
     errorMessage: errorMessage
   })
@@ -122,90 +111,10 @@ router.post('/verify', function(req, res) {
   })
 })
 
-// router.use('/user', function(req, res, next) {
-//   sess = req.session
-//   if (sess.userName) {
-//     next()
-//   } else {
-//     res.redirect('/login')
-//   }
-// })
-
-// router.get('/user', function(req, res) {
-//   res.send("you have made it!")
-// })
-
-
-
 router.get('/logout', function(req, res) {
   sess = req.session
   sess.userName = ''
   res.redirect('/login')
 })
-
-
-
-
-
-// router.get('/like/:id', function(req, res) {
-//   sess = req.session
-//   const postId = req.params.id
-//   models.Like.findOne({
-//     where: {
-//       postId: postId,
-//       userId: sess.userId
-//     }
-//   }).then(function(liked) {
-//     if (!liked) {
-//       const like = models.Like.build({
-//         userId: sess.userId,
-//         postId: postId
-//       })
-//       like.save().then(function(like) {
-//         console.log(like);
-//       })
-//       const likes = models.Like.findAll({
-//         where: {
-//           postId: postId,
-//         },
-//         include: [
-//           {model: models.User,
-//           as: 'user'}
-//         ]
-//       })
-//     .then(function(likes) {
-//       for (var i = 0; i < likes.length; i++) {
-//         const user = likes[i].user
-//             console.log('username', user.username);
-//             console.log('likes', likes.length);
-//       }
-//
-//       })
-//
-//     } else {
-//       console.log("already liked!");
-//
-//     }
-//           res.redirect('/')
-//   })
-//
-// })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router

@@ -61,12 +61,10 @@
       </div>
       <div class="user-likes">
 
-
-          <!-- Likes: {{likeCount}} -->
           <h3>Liked by:</h3>
           {{#usersLiked}}
           <div class="user-like">
-                        {{.}}
+                        <a href="/user/{{id}}">{{username}}</a>
           </div>
 
           {{/usersLiked}}
