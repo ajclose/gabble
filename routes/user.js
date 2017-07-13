@@ -123,7 +123,7 @@ router.get('/:id', function(req, res) {
 
 router.get('/like/:id', function(req, res) {
   sess = req.session
-  const prevPage = req.headers.referer.substring(21)
+  const prevPage = req.headers.referer.substring(37)
   const postId = req.params.id
   models.Like.build({
     postId: postId,
@@ -136,7 +136,7 @@ router.get('/like/:id', function(req, res) {
 
 router.get('/unlike/:id', function(req, res) {
   sess = req.session
-  const prevPage = req.headers.referer.substring(21)
+  const prevPage = req.headers.referer.substring(37)
   const postId = req.params.id
   models.Like.destroy({
     where: {
@@ -150,7 +150,7 @@ router.get('/unlike/:id', function(req, res) {
 
 router.post('/delete/:id', function(req, res) {
   sess = req.session
-  const prevPage = req.headers.referer.substring(21)
+  const prevPage = req.headers.referer.substring(37)
   models.Like.destroy({
     where: {
       postId: req.params.id
