@@ -83,6 +83,10 @@ router.post('/signup', function(req, res) {
 })
 })
 
+router.get("/", function(req, res) {
+  res.redirect("/login")
+})
+
 router.get('/login', function(req, res) {
   sess = req.session
   res.render('login', {
