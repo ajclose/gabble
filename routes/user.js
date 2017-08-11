@@ -8,6 +8,7 @@ let errorMessage;
 const Busboy = require('busboy')
 const path = require('path')
 const fs = require('fs')
+const URL = require('url')
 
 router.use(session({
   secret: 'keyboard cat',
@@ -123,7 +124,7 @@ router.get('/:id', function(req, res) {
 
 router.get('/like/:id', function(req, res) {
   sess = req.session
-  const prevPage = req.headers.referer.substring(37)
+  const prevPage = URL.parse(req.headers.referer).pathname
   const postId = req.params.id
   models.Like.build({
     postId: postId,
@@ -136,7 +137,8 @@ router.get('/like/:id', function(req, res) {
 
 router.get('/unlike/:id', function(req, res) {
   sess = req.session
-  const prevPage = req.headers.referer.substring(37)
+
+  const prevPage = URL.parse(req.headers.referer).pathname
   const postId = req.params.id
   models.Like.destroy({
     where: {
@@ -150,7 +152,7 @@ router.get('/unlike/:id', function(req, res) {
 
 router.post('/delete/:id', function(req, res) {
   sess = req.session
-  const prevPage = req.headers.referer.substring(37)
+  const prevPage = URL.parse(req.headers.referer).pathname
   models.Like.destroy({
     where: {
       postId: req.params.id
